@@ -57,7 +57,7 @@ public class SearchActivity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(this);
             PhotoLoader images = new PhotoLoader();
-            photos = images.loadPhotos(keyword);
+            photos = images.loadPhotos(keyword , this);
            /* Photo a = new Photo("http://68.media.tumblr.com/7839d4b473084363b4044782f4e218d6/tumblr_oq01hzswfz1rrbdkco1_500.jpg");
             photos.add(a);
 

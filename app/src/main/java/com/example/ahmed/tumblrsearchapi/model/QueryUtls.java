@@ -10,7 +10,7 @@ public class QueryUtls {
 
     public static String getTaggedPostQuery(String keyword)
     {
-        String base = "api.tumblr.com/v2/tagged?tag=";
+        String base = "https://api.tumblr.com/v2/tagged?tag=";
         String apiKey = "&api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4";
         String finalrequest =  base + keyword + apiKey;
         return finalrequest ;

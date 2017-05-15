@@ -1,11 +1,16 @@
 package com.example.ahmed.tumblrsearchapi.presenter;
 
+import android.content.Context;
+
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ahmed.tumblrsearchapi.model.Photo;
 import com.example.ahmed.tumblrsearchapi.model.QueryUtls;
+import com.example.ahmed.tumblrsearchapi.view.SearchActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,13 +23,13 @@ import java.util.List;
  * Created by ahmed on 5/15/17.
  */
 
-public class PhotoLoader {
+public class PhotoLoader extends SearchActivity{
 
-    public  static List<Photo> loadPhotos(String keyword) {
+    public  static List<Photo> loadPhotos(String keyword , Context context) {
 
+        RequestQueue queue = Volley.newRequestQueue(context);
         String url = QueryUtls.getTaggedPostQuery(keyword);
          final List<Photo> photosList = new ArrayList<>();
-
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -49,6 +54,8 @@ public class PhotoLoader {
 
                     }
                 });
+
+        queue.add(jsObjRequest);
         return photosList;
     }
 }
