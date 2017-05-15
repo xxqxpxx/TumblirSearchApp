@@ -50,7 +50,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         Photo photo = photos.get(position);
         Picasso.with(mContext)
                 .load(Uri.parse(photo.getphotoUrl()))
-                .fit()
+                .error(R.drawable.logo)
                 .into(holder.photoUrl);
     }
 

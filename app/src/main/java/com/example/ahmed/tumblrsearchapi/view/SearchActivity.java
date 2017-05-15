@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.example.ahmed.tumblrsearchapi.R;
 import com.example.ahmed.tumblrsearchapi.model.Photo;
 import com.example.ahmed.tumblrsearchapi.presenter.PhotoAdapter;
+import com.example.ahmed.tumblrsearchapi.presenter.PhotoLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PhotoAdapter adapter;
     private List<Photo> photos;
+    String keyword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,9 @@ public class SearchActivity extends AppCompatActivity {
 
 
         Intent in = getIntent();
-        String tv1 = in.getStringExtra("searchEntry");
-      /*//  View.setText(tv1);
-        Toast.makeText(SearchActivity.this , tv1 , Toast.LENGTH_LONG).show();*/
+         keyword = in.getStringExtra("searchEntry");
+
+        setTitle(keyword);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         photos = new ArrayList<>();
@@ -51,7 +53,10 @@ public class SearchActivity extends AppCompatActivity {
 
         private void prepareAlbums() {
 
-            Photo a = new Photo("http://68.media.tumblr.com/7839d4b473084363b4044782f4e218d6/tumblr_oq01hzswfz1rrbdkco1_500.jpg");
+            PhotoLoader images = new PhotoLoader();
+
+            photos = images.loadPhotos(keyword);
+           /* Photo a = new Photo("http://68.media.tumblr.com/7839d4b473084363b4044782f4e218d6/tumblr_oq01hzswfz1rrbdkco1_500.jpg");
             photos.add(a);
 
             a = new Photo("https://68.media.tumblr.com/575a7f7993d33789b709035f3118a4f2/tumblr_oq01mcdpvQ1ups5ppo1_1280.jpg");
@@ -68,7 +73,7 @@ public class SearchActivity extends AppCompatActivity {
 
             a = new Photo("https://68.media.tumblr.com/e61424787fa22d7b6bc686b544647d16/tumblr_ooghilE3TU1tthcowo1_1280.jpg");
             photos.add(a);
-
+*/
 
             adapter.notifyDataSetChanged();
         }
