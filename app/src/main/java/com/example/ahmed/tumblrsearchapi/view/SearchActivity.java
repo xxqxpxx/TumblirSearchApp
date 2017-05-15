@@ -1,26 +1,27 @@
 package com.example.ahmed.tumblrsearchapi.view;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.View;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.example.ahmed.tumblrsearchapi.R;
 import com.example.ahmed.tumblrsearchapi.model.Photo;
 import com.example.ahmed.tumblrsearchapi.presenter.PhotoAdapter;
 import com.example.ahmed.tumblrsearchapi.presenter.PhotoLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private PhotoAdapter adapter;
-    private List<Photo> photos;
     String keyword;
 
     @Override
@@ -35,14 +36,6 @@ public class SearchActivity extends AppCompatActivity {
         setTitle(keyword);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        photos = new ArrayList<>();
-        adapter = new PhotoAdapter(this, photos);
-
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-       /* recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
-        recyclerView.setAdapter(adapter);
 
         prepareAlbums();
 
@@ -55,32 +48,21 @@ public class SearchActivity extends AppCompatActivity {
 
         private void prepareAlbums() {
 
-            RequestQueue queue = Volley.newRequestQueue(this);
             PhotoLoader images = new PhotoLoader();
-            photos = images.loadPhotos(keyword , this);
-           /* Photo a = new Photo("http://68.media.tumblr.com/7839d4b473084363b4044782f4e218d6/tumblr_oq01hzswfz1rrbdkco1_500.jpg");
-            photos.add(a);
-
-            a = new Photo("https://68.media.tumblr.com/575a7f7993d33789b709035f3118a4f2/tumblr_oq01mcdpvQ1ups5ppo1_1280.jpg");
-            photos.add(a);
-
-            a = new Photo("https://68.media.tumblr.com/cd2e108a770e149f335f9576de0dbd23/tumblr_oq01h8iLfR1tvmjyyo1_1280.jpg");
-            photos.add(a);
-
-            a = new Photo("http://68.media.tumblr.com/2a13174cec006895e92370a3cf2abcfe/tumblr_oq01g5ntFM1uwyu6ro1_1280.jpg");
-            photos.add(a);
-
-            a = new Photo("https://68.media.tumblr.com/249e9b0b6312b08488db4ed6d5246569/tumblr_oq01glwhit1uh54woo1_75sq.jpg");
-            photos.add(a);
-
-            a = new Photo("https://68.media.tumblr.com/e61424787fa22d7b6bc686b544647d16/tumblr_ooghilE3TU1tthcowo1_1280.jpg");
-            photos.add(a);
-*/
-
-            adapter.notifyDataSetChanged();
+            images.loadPhotos(keyword , this , this);
         }
 
-      /*  public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public void onDataLoaded(List<Photo> photosList) {
+        adapter = new PhotoAdapter(this, photosList);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+    }
+
+        public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
             private int spanCount;
             private int spacing;
@@ -115,14 +97,12 @@ public class SearchActivity extends AppCompatActivity {
                 }
             }
         }
-
-        *//**
-         * Converting dp to pixel
-         *//*
         private int dpToPx(int dp) {
             Resources r = getResources();
             return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-        }*/
+        }
     }
+
+
 
 

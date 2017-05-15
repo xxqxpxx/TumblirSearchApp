@@ -25,37 +25,42 @@ import java.util.List;
 
 public class PhotoLoader extends SearchActivity{
 
-    public  static List<Photo> loadPhotos(String keyword , Context context) {
+    public  static void loadPhotos(String keyword, Context context, final SearchActivity searchActivity) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = QueryUtls.getTaggedPostQuery(keyword);
-         final List<Photo> photosList = new ArrayList<>();
+
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            List<Photo> photosList = new ArrayList<>();
                             JSONArray data = response.getJSONArray("response");
                             for (int i = 0; i < data.length(); ++i) {
+                                if (data.getJSONObject(i).has("photos")) {
                                     JSONArray photos = data.getJSONObject(i).getJSONArray("photos");
                                     String photoUrl = photos.getJSONObject(0).getJSONObject("original_size").getString("url");
                                     Photo pic = new Photo(photoUrl);
                                     photosList.add(pic);
+                                }
                             }
+                            searchActivity.onDataLoaded(photosList);
                         } catch (JSONException e) {
-                            //some exception handler code.
+                            e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        error.printStackTrace();
                     }
                 });
 
         queue.add(jsObjRequest);
-        return photosList;
+
+
     }
 }
