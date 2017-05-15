@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ahmed.tumblrsearchapi.MainActivity">
+    tools:context="com.example.ahmed.tumblrsearchapi.view.MainActivity">
 
     <ImageView
         android:id="@+id/logo"
